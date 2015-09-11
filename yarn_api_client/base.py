@@ -30,7 +30,8 @@ class BaseYarnAPI(object):
             path = api_path
 
         self.logger.info('Request http://%s:%s%s', self.address, self.port, path)
-        self.http_conn.request('GET', path)
+        headers = {"Content-type": "application/json"}
+        self.http_conn.request('GET', path, headers=headers)
 
         response = self.http_conn.getresponse()
 
