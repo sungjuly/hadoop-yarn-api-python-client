@@ -15,8 +15,8 @@ from .errors import APIError, ConfigurationError
 
 
 class Response(object):
-    def __init__(self, http_response):
-        self.data = json.load(http_response)
+    def __init__(self, body):
+        self.data = json.loads(body)
 
 
 class BaseYarnAPI(object):
@@ -36,7 +36,8 @@ class BaseYarnAPI(object):
         response = self.http_conn.getresponse()
 
         if response.status == OK:
-            return self.response_class(response)
+            body = response.read().decode("utf-8")
+            return self.response_class(body)
         else:
             msg = 'Response finished with status: %s' % response.status
             raise APIError(msg)
